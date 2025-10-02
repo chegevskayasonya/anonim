@@ -1,0 +1,34 @@
+# aiohttp fix for Python 3.13 build
+
+This minimal fix pins aiohttp to a version compatible with Python 3.13 to avoid C-extension build failures during installation/deploy.
+
+## Files
+- `requirements.txt` — sets `aiohttp>=3.10`.
+
+## How to install locally
+```powershell
+python -m pip install -U pip setuptools wheel
+python -m pip install -r requirements.txt --only-binary=:all:
+```
+The `--only-binary=:all:` flag encourages pip to use prebuilt wheels, avoiding compilation of C extensions.
+
+## If the build still tries to compile C extensions
+Set environment variable to disable aiohttp C-extensions (slower, but works):
+- PowerShell (Windows):
+```powershell
+setx AIOHTTP_NO_EXTENSIONS 1
+```
+- Bash (Linux/macOS):
+```bash
+export AIOHTTP_NO_EXTENSIONS=1
+```
+Then reinstall:
+```powershell
+python -m pip install -r requirements.txt
+```
+
+## For Render deployment
+- Ensure your deploy uses this `requirements.txt`.
+- Optionally add env var in Render dashboard → Environment:
+  - `AIOHTTP_NO_EXTENSIONS=1` (only if you still see compilation)
+- If you must pin Python version, add a `runtime.txt` with e.g. `python-3.13.4` (or fallback `python-3.12.6`).
