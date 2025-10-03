@@ -6,7 +6,7 @@ import os
 from collections import defaultdict
 
 
-API_TOKEN =("8319351645:AAGU2PoC-46btYYVBu00Igiq-E1MS4sxLaY")
+API_TOKEN =(BOT_TOKEN")
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
